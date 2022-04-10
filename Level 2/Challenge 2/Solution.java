@@ -10,12 +10,10 @@ public class Solution {
         The same digit may appear multiple times in the list, but each element in the list may only be used once. */
         
         int mod_three_digits = 0;
-        int one_mod_three_index = -1;
-        int one_mod_three_index_1 = -1;
-        int one_mod_three_index_2 = -1;
-        int two_mod_three_index = -1;
-        int two_mod_three_index_1 = -1;
-        int two_mod_three_index_2 = -1;
+        int a = -1;
+        int b = -1;
+        int c = -1;
+
         
 
         // sum of array l
@@ -30,8 +28,8 @@ public class Solution {
             for(int i = 0; i < l.length; i++) {
                 if(l[i] % 3 == 1){
                     // remembering its index to remove 
-                    one_mod_three_index = i;
-                    mod_three_digits+=1;
+                    a = i;
+                    mod_three_digits=1;
                     
                     break;
                 }
@@ -40,16 +38,16 @@ public class Solution {
             for(int i = 0; i < l.length; i++) {
                 if(l[i] % 3 == 2){
                     // remembering its index to remove 
-                    two_mod_three_index_1 = i;
-                    mod_three_digits+=1;
+                    b = i;
+                    mod_three_digits=1;
                     break;
                 }
             }
             // check if there are two digits in the list l that are 2 mod 3 (part2)
             for(int i = 0; i< l.length; i++) {
-                if(l[i] % 3 == 2 && i != two_mod_three_index_1){
+                if(l[i] % 3 == 2 && i != b){
                     // remembering its index to remove 
-                    two_mod_three_index_2 = i;
+                    c = i;
                     mod_three_digits+=1;
                     break;
                 }
@@ -57,8 +55,8 @@ public class Solution {
             //making a new list without the disturbing digits
             int[] cleanlist = new int[l.length-mod_three_digits];
             for (int i = 0, j = 0; i < l.length; i++) {
-                if(mod_three_digits==1){
-                    if(i == one_mod_three_index || i == two_mod_three_index_1 || i == two_mod_three_index_2){
+                if(mod_three_digits==1 || mod_three_digits == 2){
+                    if(i == a || i == b || i == c){
                         continue;
                     }
                     
@@ -72,40 +70,33 @@ public class Solution {
             for(int i = 0; i < l.length; i++) {
                 if(l[i] % 3 == 2){
                     // remembering its index to remove 
-                    two_mod_three_index = i;
-                    mod_three_digits+=1;
+                    a = i;
+                    mod_three_digits=1;
                 }
             }
             // check if there are two digits in the list l that are 1 mod 3 (part1)
             for(int i = 0; i < l.length; i++) {
                 if(l[i] % 3 == 1){
                     // remembering its index to remove 
-                    one_mod_three_index_1 = i;
-                    mod_three_digits+=1;
+                    b = i;
+                    mod_three_digits=1;
                     break;
                 }
             }
             // check if there are two digits in the list l that are 1 mod 3 (part2)
             for(int i = 0; i< l.length; i++) {
-                if(l[i] % 3 == 1 && i != one_mod_three_index_1){
+                if(l[i] % 3 == 1 && i != b){
                     // remembering its index to remove 
-                    one_mod_three_index_2 = i;
+                    c = i;
                     mod_three_digits+=1;
                     break;
                 }
             }
             //making a new list without the disturbing digits
-            int[] cleanlist = new int[l.length-mod_three_digits];
-            for (int i = 0, j = 0; i < l.length; i++) {
-                if(mod_three_digits==1){
-                    if(i == one_mod_three_index_1 || i == one_mod_three_index_2 || i == two_mod_three_index){
-                        continue;
-                    }
-                    cleanlist[j++] = l[i];
-                }
-            }
+            
+            
 
-            return numbermaker(cleanlist);
+            return numbermaker(listcleaner(l, mod_three_digits, a,b,c));
         }
         //condition: when the array of numbers is already divisible by 3, so I form the 
         //largest possible number by reversing the list and then turning it into an integer
@@ -114,6 +105,20 @@ public class Solution {
 
         }
 
+    }
+    public static int[] listcleaner(int[] l, int mod_three_digits, int a, int b, int c){
+        //making a new list without the disturbing digits
+        int[] cleanlist = new int[l.length-mod_three_digits];
+        for (int i = 0, j = 0; i < l.length; i++) {
+            if(mod_three_digits==1 || mod_three_digits==2){
+                if(i == a || i == b || i == c){
+                    continue;
+                }
+                cleanlist[j++] = l[i];
+            }
+
+        }
+        return cleanlist;
     }
     public static int[] descendsort(int[] l){
         //getting the descending order sort of the list l
@@ -137,7 +142,7 @@ public class Solution {
     }
     //Main function for testing
     public static void main(String[] args){
-        int[] l = {3, 1, 4, 1, 5, 9};
+        int[] l = {3, 1, 4, 1, 4, 9};
         solution(l);
         System.out.println(solution(l));
     }
