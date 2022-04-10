@@ -53,17 +53,18 @@ public class Solution {
                 }
             }
             //making a new list without the disturbing digits
-            int[] cleanlist = new int[l.length-mod_three_digits];
-            for (int i = 0, j = 0; i < l.length; i++) {
-                if(mod_three_digits==1 || mod_three_digits == 2){
-                    if(i == a || i == b || i == c){
-                        continue;
-                    }
+            return numbermaker(listcleaner(l, mod_three_digits, a, b, c));
+            // int[] cleanlist = new int[l.length-mod_three_digits];
+            // for (int i = 0, j = 0; i < l.length; i++) {
+            //     if(mod_three_digits==1 || mod_three_digits == 2){
+            //         if(i == a || i == b || i == c){
+            //             continue;
+            //         }
                     
-                    cleanlist[j++] = l[i];
-                }
-            }
-            return numbermaker(cleanlist);
+            //         cleanlist[j++] = l[i];
+            //     }
+            // }
+            // return numbermaker(cleanlist);
         }
         if(l_sum % 3==2){
             // checking if a digit in the list l is 2 mod 3
