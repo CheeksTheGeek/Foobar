@@ -34,3 +34,15 @@ public class anothersoln {
         
     }
 }
+
+            // int[] cleanlist = new int[l.length-mod_three_digits];
+            // for (int i = 0, j = 0; i < l.length; i++) {
+            //     if(mod_three_digits==1 || mod_three_digits == 2){
+            //         if(i == a || i == b || i == c){
+            //             continue;
+            //         }
+                    
+            //         cleanlist[j++] = l[i];
+            //     }
+            // }
+            // return numbermaker(cleanlist);

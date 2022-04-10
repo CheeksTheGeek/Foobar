@@ -94,9 +94,6 @@ public class Solution {
                 }
             }
             //making a new list without the disturbing digits
-            
-            
-
             return numbermaker(listcleaner(l, mod_three_digits, a,b,c));
         }
         //condition: when the array of numbers is already divisible by 3, so I form the 
