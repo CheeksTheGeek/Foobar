@@ -1,122 +1,54 @@
 import java.util.Arrays;
-
 public class Solution {
-    
     public static int solution(int[] l) {
-        // Your code here
-        /*You have L, a list containing some digits (0 to 9). Write a function solution(L) which finds 
-        the largest number that can be made from some or all of these digits and is divisible by 3. 
-        If it is not possible to make such a number, return 0 as the solution. L will contain anywhere from 1 to 9 digits.  
-        The same digit may appear multiple times in the list, but each element in the list may only be used once. */
-        
-        int mod_three_digits = 0;
-        int a = -1;
-        int b = -1;
-        int c = -1;
-
-        
-
-        // sum of array l
+        Arrays.sort(l);
         int l_sum = 0;
          for(int i = 0; i < l.length; i++) {
              l_sum += l[i];
         }
-
-        //conditions to check if the original list is divisible by 3, if not then what letter to remove to make it
-        if(l_sum % 3==1){
-            // checking if a digit in the list l is 1 mod 3
-            for(int i = 0; i < l.length; i++) {
-                if(l[i] % 3 == 1){
-                    // remembering its index to remove 
-                    a = i;
-                    mod_three_digits=1;
-                    
-                    break;
-                }
-            }
-            // check if there are two digits in the list l that are 2 mod 3 (part1)
-            for(int i = 0; i < l.length; i++) {
-                if(l[i] % 3 == 2){
-                    // remembering its index to remove 
-                    b = i;
-                    mod_three_digits=1;
-                    break;
-                }
-            }
-            // check if there are two digits in the list l that are 2 mod 3 (part2)
-            for(int i = 0; i< l.length; i++) {
-                if(l[i] % 3 == 2 && i != b){
-                    // remembering its index to remove 
-                    c = i;
-                    mod_three_digits+=1;
-                    break;
-                }
-            }
-            //making a new list without the disturbing digits
-            return numbermaker(listcleaner(l, mod_three_digits, a, b, c));
-            // int[] cleanlist = new int[l.length-mod_three_digits];
-            // for (int i = 0, j = 0; i < l.length; i++) {
-            //     if(mod_three_digits==1 || mod_three_digits == 2){
-            //         if(i == a || i == b || i == c){
-            //             continue;
-            //         }
-                    
-            //         cleanlist[j++] = l[i];
-            //     }
-            // }
-            // return numbermaker(cleanlist);
-        }
-        if(l_sum % 3==2){
-            // checking if a digit in the list l is 2 mod 3
-            for(int i = 0; i < l.length; i++) {
-                if(l[i] % 3 == 2){
-                    // remembering its index to remove 
-                    a = i;
-                    mod_three_digits=1;
-                }
-            }
-            // check if there are two digits in the list l that are 1 mod 3 (part1)
-            for(int i = 0; i < l.length; i++) {
-                if(l[i] % 3 == 1){
-                    // remembering its index to remove 
-                    b = i;
-                    mod_three_digits=1;
-                    break;
-                }
-            }
-            // check if there are two digits in the list l that are 1 mod 3 (part2)
-            for(int i = 0; i< l.length; i++) {
-                if(l[i] % 3 == 1 && i != b){
-                    // remembering its index to remove 
-                    c = i;
-                    mod_three_digits+=1;
-                    break;
-                }
-            }
-            //making a new list without the disturbing digits
-            return numbermaker(listcleaner(l, mod_three_digits, a,b,c));
-        }
-        //condition: when the array of numbers is already divisible by 3, so I form the 
-        //largest possible number by reversing the list and then turning it into an integer
-        else{
+        if(l_sum%3==0){
             return numbermaker(l);
-
-        }
-
-    }
-    public static int[] listcleaner(int[] l, int mod_three_digits, int a, int b, int c){
-        //making a new list without the disturbing digits
-        int[] cleanlist = new int[l.length-mod_three_digits];
-        for (int i = 0, j = 0; i < l.length; i++) {
-            if(mod_three_digits==1 || mod_three_digits==2){
-                if(i == a || i == b || i == c){
-                    continue;
+        }  
+        if(l_sum%3==1){
+            for(int i = 0; i<l.length; i++){
+                if(l[i]%3==1){
+                    return numbermaker(elementremover(l, i));
                 }
-                cleanlist[j++] = l[i];
+            }
+            int x=0;
+            int[] partially_cleaned_list = new int[l.length-1];
+            for(int i= 0; i<l.length; i++){
+                if(l[i]%3==2){
+                    partially_cleaned_list =  elementremover(l, i);
+                    x = i-1;
+                }
+                if(l[i]%3==2 && i!=x){
+                    return numbermaker(elementremover(partially_cleaned_list, i));
+                }
+            }
+        }
+        else{
+            for(int i = 0; i<l.length; i++){
+                if(l[i]%3==2){
+                    return numbermaker(elementremover(l, i));
+                }
+            }
+            int x=0;
+            int[] partially_cleaned_list = new int[l.length-1];
+            for(int i= 0; i<l.length; i++){
+                if(l[i]%3==1){
+                    partially_cleaned_list =  elementremover(l, i);
+                    x = i;
+                }
+                if(l[i]%3==1 && i!=x){
+                    return numbermaker(elementremover(partially_cleaned_list, i));
+                }
             }
 
         }
-        return cleanlist;
+        return 0;
+        
+
     }
     public static int[] descendsort(int[] l){
         //getting the descending order sort of the list l
@@ -129,8 +61,6 @@ public class Solution {
         }
         return revsortedlist;
     }
-
-    //turning the array l into an integer for returning
     public static int numbermaker(int[] l){
         String l_int = Integer.toString(descendsort(l)[0]);
         for(int i = 1; i < l.length; i++) {
@@ -138,10 +68,24 @@ public class Solution {
         }
         return Integer.parseInt(l_int);
     }
-    //Main function for testing
+    public static int[] elementremover(int[] l, int indexoftrash){
+        int[] firsttemparray = Arrays.copyOfRange(l, 0, indexoftrash);
+        int[] secondtemparray = Arrays.copyOfRange(l, indexoftrash+1, l.length);
+        int[] cleanarray = new int[firsttemparray.length+secondtemparray.length];
+        System.arraycopy(firsttemparray, 0, cleanarray, 0, firsttemparray.length);
+        System.arraycopy(secondtemparray, 0, cleanarray, firsttemparray.length, secondtemparray.length);
+        return cleanarray;
+    }
     public static void main(String[] args){
         int[] l = {3, 1, 4, 1, 4, 9};
-        solution(l);
-        System.out.println(solution(l));
+        int[] m = {3, 1, 4, 1};
+        int[] n = {3, 1, 4, 1, 5, 9};
+        int[] o = {6, 9, 0, 5, 5};
+        // int[] arr = {l,m,n};
+        // int[] answarr = {"94431", "4311", "94311"}
+        // for(int i = 0; i < arr.length; i++) {
+        //     if(arr[i] )
+        // }
+        System.out.println(solution(o));
     }
 }
